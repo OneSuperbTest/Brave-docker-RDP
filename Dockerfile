@@ -4,12 +4,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     TZ=UTC \
-    RDP_USER=rdp \
-    HOME=/data/home/rdp \
-    XDG_CONFIG_HOME=/data/home/rdp/.config \
-    XDG_CACHE_HOME=/tmp/rdp-cache \
-    XDG_DATA_HOME=/data/home/rdp/.local/share \
-    XDG_STATE_HOME=/data/home/rdp/.local/state
+    RDP_USER=brave \
+    HOME=/data/home/brave \
+    XDG_CONFIG_HOME=/data/home/brave/.config \
+    XDG_CACHE_HOME=/tmp/brave-cache \
+    XDG_DATA_HOME=/data/home/brave/.local/share \
+    XDG_STATE_HOME=/data/home/brave/.local/state
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl gnupg \
@@ -33,10 +33,10 @@ RUN install -d -m 0755 /usr/share/keyrings \
     && rm -rf /var/lib/apt/lists/*
 
 # Dedicated non-root account. Its home is on the Railway volume.
-RUN useradd --create-home --home-dir /data/home/rdp --shell /bin/bash rdp \
-    && usermod -aG audio,video rdp \
-    && mkdir -p /data/home/rdp /data/Downloads /data/logs /data/cache \
-    && chown -R rdp:rdp /data \
+RUN useradd --create-home --home-dir /data/home/brave --shell /bin/bash brave \
+    && usermod -aG audio,video brave \
+    && mkdir -p /data/home/brave /data/Downloads /data/logs /data/cache \
+    && chown -R brave:brave /data \
     && mkdir -p /var/run/xrdp /var/log/xrdp \
     && chown xrdp:xrdp /var/run/xrdp /var/log/xrdp \
     && chmod 1777 /tmp
