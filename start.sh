@@ -1,10 +1,11 @@
+```bash
 #!/bin/bash
 set -Eeuo pipefail
 
 LOG_DIR=/data/logs
-mkdir -p "$LOG_DIR" /data/home/rdp /data/Downloads /data/cache
-chown -R rdp:rdp /data/home/rdp /data/Downloads /data/cache
-chmod 700 /data/home/rdp
+mkdir -p "$LOG_DIR" /data/home/brave /data/Downloads /data/cache
+chown -R brave:brave /data/home/brave /data/Downloads /data/cache
+chmod 700 /data/home/brave
 
 log(){ printf '[%s] %s\n' "$(date -Is)" "$*" | tee -a "$LOG_DIR/startup.log"; }
 
@@ -14,27 +15,27 @@ if [[ -z "${RDP_PASSWORD:-}" ]]; then
 fi
 
 # Set the password without putting it in the process command line.
-printf 'rdp:%s\n' "$RDP_PASSWORD" | chpasswd
+printf 'brave:%s\n' "$RDP_PASSWORD" | chpasswd
 unset RDP_PASSWORD
 
 # Ensure the passwd database points at the persistent Railway volume.
-usermod -d /data/home/rdp rdp
+usermod -d /data/home/brave brave
 
 # Runtime directories needed by xrdp and the user session.
-install -d -m 0700 -o rdp -g rdp /data/home/rdp/.config /data/home/rdp/.local
-install -d -m 0755 -o rdp -g rdp /data/home/rdp/.config/openbox
-install -d -m 0755 -o rdp -g rdp /data/home/rdp/.config/pcmanfm
-install -d -m 0755 -o rdp -g rdp /data/home/rdp/.local/share
-install -d -m 0755 -o rdp -g rdp /data/home/rdp/.local/state
+install -d -m 0700 -o brave -g brave /data/home/brave/.config /data/home/brave/.local
+install -d -m 0755 -o brave -g brave /data/home/brave/.config/openbox
+install -d -m 0755 -o brave -g brave /data/home/brave/.config/pcmanfm
+install -d -m 0755 -o brave -g brave /data/home/brave/.local/share
+install -d -m 0755 -o brave -g brave /data/home/brave/.local/state
 
 # A persistent downloads directory, with a normal home-relative view too.
-if [[ ! -e /data/home/rdp/Downloads ]]; then
-  ln -s /data/Downloads /data/home/rdp/Downloads
+if [[ ! -e /data/home/brave/Downloads ]]; then
+  ln -s /data/Downloads /data/home/brave/Downloads
 fi
 
 # Make logs readable to the session user.
 touch "$LOG_DIR/session.log" "$LOG_DIR/brave.log" "$LOG_DIR/graphics.log"
-chown rdp:rdp "$LOG_DIR"/*.log
+chown brave:brave "$LOG_DIR"/*.log
 
 # Debian's xrdp package may expect these directories to exist.
 mkdir -p /run/dbus /run/xrdp
@@ -68,7 +69,7 @@ fi
 
 cleanup(){
   log "Shutdown requested."
-  pkill -TERM -u rdp 2>/dev/null || true
+  pkill -TERM -u brave 2>/dev/null || true
   pkill -TERM xrdp-sesman 2>/dev/null || true
   pkill -TERM xrdp 2>/dev/null || true
 }
@@ -101,3 +102,4 @@ STATUS=$?
 log "An RDP service exited with status $STATUS. Stopping the container."
 kill "$TAIL_PID" 2>/dev/null || true
 exit "$STATUS"
+```
