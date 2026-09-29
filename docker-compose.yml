@@ -1,0 +1,11 @@
+services:
+  brave-rdp:
+    build: .
+    environment:
+      RDP_PASSWORD: "change-me"
+    ports:
+      - "3389:3389"
+    volumes:
+      - ./data:/data
+    shm_size: "1g"
+    restart: unless-stopped

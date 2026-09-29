@@ -1,0 +1,25 @@
+#!/bin/sh
+
+export HOME=/data/home/rdp
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME=/tmp/rdp-cache
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_LOADER_DRIVER_OVERRIDE=llvmpipe
+export GDK_BACKEND=x11
+export QT_X11_NO_MITSHM=1
+
+mkdir -p "$HOME/.config/pcmanfm/LXDE" "$HOME/.config/openbox" \
+         "$HOME/.local/share" /tmp/rdp-cache
+
+# Keep the desktop intentionally sparse. These are the only two applications
+# automatically presented to the user.
+if ! pgrep -u rdp -x pcmanfm >/dev/null 2>&1; then
+    pcmanfm --desktop --profile=lxde >>/data/logs/pcmanfm.log 2>&1 &
+fi
+
+# Brave is launched once per XRDP session. Closing Brave does not end Openbox.
+if ! pgrep -u rdp -x brave-browser >/dev/null 2>&1; then
+    /usr/local/bin/brave-launcher >>/data/logs/brave.log 2>&1 &
+fi
