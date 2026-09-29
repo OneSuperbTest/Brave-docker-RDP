@@ -9,7 +9,7 @@ echo "DISPLAY=${DISPLAY:-unset}"
 echo "USER=${USER:-unset}"
 echo "HOME=${HOME:-unset}"
 
-export HOME=/data/home/rdp
+export HOME=/data/home/brave
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
@@ -23,8 +23,8 @@ export GDK_BACKEND=x11
 export QT_X11_NO_MITSHM=1
 
 mkdir -p "$XDG_CONFIG_HOME/openbox" "$XDG_CONFIG_HOME/pcmanfm" \
-         "$XDG_DATA_HOME" "$XDG_STATE_HOME" /tmp/rdp-cache
-chown -R rdp:rdp "$HOME" /tmp/rdp-cache 2>/dev/null || true
+         "$XDG_DATA_HOME" "$XDG_STATE_HOME" /tmp/brave-cache
+chown -R brave:brave "$HOME" /tmp/brave-cache 2>/dev/null || true
 
 # Give xrdp/Xorg a moment to finish setting up RandR before Openbox starts.
 sleep 1
